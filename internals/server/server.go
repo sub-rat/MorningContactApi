@@ -25,12 +25,11 @@ func (s *server) Run() {
 }
 
 func (s *server) initRoutes() {
-	s.C.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-
-	s.C.GET("/contacts", user.GetContacts)
-	s.C.POST("/contacts", user.PostContacts)
+	user.RegisterRoutes(s.C, user.NewService(user.NewRepository(*s.DB)))
 }
+
+// s.C.GET("/ping", func(c *gin.Context) {
+// 	c.JSON(200, gin.H{
+// 		"message": "pong",
+// 	})
+// })
