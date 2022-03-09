@@ -18,8 +18,18 @@ func NewRepository(db gorm.DB) RepositoryInterface {
 	return &repository{db}
 }
 
+// 100
+// limit = 20
+// page 1 = 1-1 =0; page 2 = 2-1=1
+// page no 1 = page*limit= offset 0; page no 2; page*limit; page no 3; page*limit
+// select * from users where name like %q% or email like %q% limit 20 offset 0
 func (repository *repository) Query(offset, limit int, q string) ([]User, error) {
-	return []User{}, nil
+	var dataList []User
+	err := repository.db.Debug().Model(&User{}).
+		Where("name like ? or email like ?", "%"+q+"%", "%"+q+"%").
+		Limit(limit).Offset(offset).
+		Find(&dataList).Error
+	return dataList, err
 }
 
 func (repository *repository) Get(id uint) (User, error) {

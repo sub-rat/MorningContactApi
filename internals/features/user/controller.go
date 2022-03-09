@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/sub-rat/MorningContactApi/pkg/utils"
 )
 
 type resource struct {
@@ -22,7 +23,24 @@ func RegisterRoutes(r *gin.Engine, service ServiceInterface) {
 }
 
 func (resource *resource) Query(c *gin.Context) {
-
+	page, limit, err := utils.Pagination(c)
+	if err != nil {
+		c.JSON(http.StatusMethodNotAllowed, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	userList, err := resource.service.Query(page*limit, limit, c.Query("q"))
+	if err != nil {
+		c.JSON(http.StatusMethodNotAllowed, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"message": "users list",
+		"data":    userList,
+	})
 }
 
 func (resource *resource) Create(c *gin.Context) {

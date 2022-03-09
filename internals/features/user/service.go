@@ -23,7 +23,8 @@ func NewService(repo RepositoryInterface) ServiceInterface {
 }
 
 func (service *service) Query(offset, limit int, q string) ([]User, error) {
-	return []User{}, nil
+	dataList, err := service.repo.Query(offset, limit, q)
+	return dataList, err
 }
 func (service *service) Get(id uint) (User, error) {
 	return User{}, nil
