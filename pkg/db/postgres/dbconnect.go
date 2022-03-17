@@ -14,6 +14,9 @@ func ConnectDatabase() *gorm.DB {
 	}
 	db.AutoMigrate(
 		&models.User{},
+		&models.Contact{},
+		&models.Address{},
+		&models.Phone{},
 	)
 	return db
 }

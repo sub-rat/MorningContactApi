@@ -2,6 +2,7 @@ package server
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/sub-rat/MorningContactApi/internals/features/contact"
 	"github.com/sub-rat/MorningContactApi/internals/features/user"
 	"github.com/sub-rat/MorningContactApi/pkg/db/postgres"
 	"gorm.io/gorm"
@@ -26,6 +27,7 @@ func (s *server) Run() {
 
 func (s *server) initRoutes() {
 	user.RegisterRoutes(s.C, user.NewService(user.NewRepository(*s.DB)))
+	contact.RegisterRoutes(s.C, contact.NewService(contact.NewRepository(*s.DB)))
 }
 
 // s.C.GET("/ping", func(c *gin.Context) {
