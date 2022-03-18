@@ -26,6 +26,8 @@ func NewRepository(db gorm.DB) RepositoryInterface {
 func (repository *repository) Query(offset, limit int, q string, userId uint) ([]Contact, error) {
 	var dataList []Contact
 	err := repository.db.Debug().Model(&Contact{}).
+		Preload("Address").
+		Preload("Phone").
 		Where("first_name like ? or last_name like ?", "%"+q+"%", "%"+q+"%").
 		Where("user_id = ?", userId).
 		Limit(limit).Offset(offset).
@@ -35,7 +37,10 @@ func (repository *repository) Query(offset, limit int, q string, userId uint) ([
 
 func (repository *repository) Get(id uint) (Contact, error) {
 	contact := Contact{}
-	err := repository.db.Debug().Model(&Contact{}).First(&contact, id).Error
+	err := repository.db.Debug().Model(&Contact{}).
+		Preload("Address").
+		Preload("Phone").
+		First(&contact, id).Error
 	return contact, err
 }
 
