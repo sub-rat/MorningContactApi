@@ -34,11 +34,7 @@ func (repository *repository) Query(offset, limit int, q string) ([]User, error)
 
 func (repository *repository) Get(id uint) (User, error) {
 	user := User{}
-	err := repository.db.Debug().Model(&User{}).
-		Preload("Contact").
-		Preload("Contact.Address").
-		Preload("Contact.Phone").
-		First(&user, id).Error
+	err := repository.db.Debug().Model(&User{}).Preload("Contact").First(&user, id).Error
 	return user, err
 }
 
