@@ -1,0 +1,11 @@
+version: '3.9'
+services:
+  api:
+    build: .
+    ports:
+      - 9992:8085
+
+  nginx-server:
+    image: nginx
+    ports:
+      - 9991:80
